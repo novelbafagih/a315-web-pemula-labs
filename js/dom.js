@@ -1,8 +1,7 @@
 function addTodo(){
 	const title = document.getElementById("title").value;
 	const date = document.getElementById("date").value;
-	console.log(title);
-	console.log(date);
+
 	const todos = document.getElementById("todos");
 	const item = makeTodo(title,date);
 
@@ -21,23 +20,58 @@ function makeTodo(title,date){
 	textContainer.appendChild(todoTitle);
 	textContainer.appendChild(todoDate);
 
-	const buttonCheck = document.createElement("button");
-	buttonCheck.classList.add("check-button");
+	const buttonCheck = createCheck();
 
 	const container = document.createElement("div");
 	container.classList.add("item","shadow");
 	container.appendChild(textContainer);
 	container.appendChild(buttonCheck);
 
-	createCheck(buttonCheck);
 
 	return container;
 }
 
-function createCheck(buttonCheck){
+function createCheck(){
+	const buttonCheck = document.createElement("button");
+	buttonCheck.classList.add("check-button");
 	buttonCheck.addEventListener('click',(event) =>{
 		const temp = buttonCheck.parentNode;
-		buttonCheck.parentNode.remove();
+		moveTodo(temp);
+	});
+	return buttonCheck;
+}
+
+function moveTodo(item){
+	const doneItem = document.getElementById('todos-done');
+	doneItem.appendChild(item);
+	item.removeChild(item.childNodes[1]);
+	createUndo(item);
+	createDelete(item);
+}
+
+function createUndo(item){
+	const buttonUndo = document.createElement("button");
+	buttonUndo.classList.add("undo-button");
+	item.appendChild(buttonUndo);
+
+	buttonUndo.addEventListener('click',(event)=>{
+		const todos = document.getElementById('todos');
+
+		item.removeChild(item.childNodes[1]);
+		item.removeChild(item.childNodes[1]);
+		const buttonCheck = createCheck();
+
+		item.appendChild(buttonCheck);
+		todos.appendChild(item);
 	});
 }
 
+function createDelete(item){
+	const buttonDelete = document.createElement("button");
+	buttonDelete.classList.add("trash-button");
+	item.appendChild(buttonDelete);
+
+	buttonDelete.addEventListener('click',(event)=>{
+		item.remove();
+	});
+}
