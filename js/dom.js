@@ -21,10 +21,23 @@ function makeTodo(title,date){
 	textContainer.appendChild(todoTitle);
 	textContainer.appendChild(todoDate);
 
+	const buttonCheck = document.createElement("button");
+	buttonCheck.classList.add("check-button");
+
 	const container = document.createElement("div");
 	container.classList.add("item","shadow");
 	container.appendChild(textContainer);
+	container.appendChild(buttonCheck);
+
+	createCheck(buttonCheck);
 
 	return container;
+}
+
+function createCheck(buttonCheck){
+	buttonCheck.addEventListener('click',(event) =>{
+		const temp = buttonCheck.parentNode;
+		buttonCheck.parentNode.remove();
+	});
 }
 
